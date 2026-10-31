@@ -1,10 +1,12 @@
+const express = require('express');
 const User = require('../models/user');
 const Task = require('../models/task');
 const mongoose = require('mongoose');
 
-module.exports = function (router) {
-    const usersRoute = router.route('/users');
-    const usersIdRoute = router.route('/users/:id');
+module.exports = function () {
+    const router = express.Router();
+    const usersRoute = router.route('/');
+    const usersIdRoute = router.route('/:id');
 
     function buildQuery(model, reqQuery) {
         let query = model.find();
@@ -216,7 +218,7 @@ module.exports = function (router) {
                 { assignedUser: "", assignedUserName: "unassigned" }
             );
 
-            res.status(200).json({ message: "User deleted", data: user });
+            return res.status(204).send();
         } catch (err) {
             res.status(500).json({ message: "Server error", data: err.message });
         }

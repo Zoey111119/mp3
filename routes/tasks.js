@@ -1,8 +1,10 @@
+const express = require('express');
 const Task = require('../models/task');
 const User = require('../models/user');
 const mongoose = require('mongoose');
 
-module.exports = function (router) {
+module.exports = function () {
+    const router = express.Router();
     const tasksRoute = router.route('/');
     const tasksIdRoute = router.route('/:id');
 
@@ -168,7 +170,7 @@ module.exports = function (router) {
                 await User.findByIdAndUpdate(task.assignedUser, { $pull: { pendingTasks: task._id.toString() } });
             }
 
-            res.status(200).json({ message: "Task deleted", data: task });
+            return res.status(204).send();
         } catch (err) {
             res.status(500).json({ message: "Server error", data: err.message });
         }
